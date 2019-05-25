@@ -1,0 +1,11 @@
+{"global": {
+    "database": {
+      "engine": "mysql",
+      "path": "mysql",
+      "name": "framework",
+      "charset": "utf8",
+      "user": "ronflex",
+      "password": "kfixwoax"
+    }
+  }
+}

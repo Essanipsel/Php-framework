@@ -1,0 +1,22 @@
+{
+  "routes": [
+    {
+      "route": "/",
+      "title": "Framework home",
+      "controller": "MainController",
+      "method": "show"
+    },
+    {
+      "route": "/error",
+      "title": "Framework error",
+      "controller": "ErrorController",
+      "method": "show"
+    },
+    {
+      "route": "blog/article/{id}",
+      "title": "Framework blog",
+      "controller": "MainController",
+      "method": "showBlog"
+    }
+  ]
+}
