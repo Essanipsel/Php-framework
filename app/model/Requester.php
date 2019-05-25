@@ -20,11 +20,13 @@ class Requester
 
         return $this->requestEngine($request);
     }
-    private function requestEngine($request){
+    private function requestEngine($request, $return = true){
         $req = $this->bdd->prepare($request);
         $req->execute($this->bindTab);
 
-        return $req->fetchAll();
+        if($return) return $req->fetchAll();
+        else return $this->bindTab;
+
     }
     private function writeWhereParam($whereTab){
         $request = "WHERE ";
@@ -43,5 +45,24 @@ class Requester
         if(@isset($limitTab[1])) $request .= ", ".$limitTab[1];
 
         return $request;
+    }
+    public function create($config){
+        $table = $config['table'];
+        $request = "INSERT INTO $table (";
+        $requestBinds = ') VALUES(';
+        $comptValues = 0;
+        foreach ($config['values'] as $index => $value){
+            if($comptValues != 0) {
+                $request .= ',';
+                $requestBinds .= ',';
+            }
+            $request .= $index;
+            $requestBinds .= ':'.$index;
+            $this->bindTab[$index] = $value;
+            $comptValues ++;
+        }
+        $request .= $requestBinds.')';
+
+        return $this->requestEngine($request, false);
     }
 }
