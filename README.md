@@ -10,7 +10,7 @@
 
 ### Config.json attributes
 
-At the project root you can see there is a config.json file. You're right, this is not very usual to use json file with PHP, but it was quite easy for this usage. This file was made to manage general attributes like database credentials, external webservices credentials, environment parameters, etc. You can add as much parameters as you want. You can access them through the $GLOBALS variable - ex: $GLOBALS['database']['password'].
+At the project root you can see there is a config.json file. You're right, this is not very usual to have json file with a PHP project, but it was quite easy in this case. This file was made to manage general attributes like database credentials, external webservices credentials, environment parameters, etc. You can add as much parameters as you want. You can access them through the $GLOBALS variable - ex: $GLOBALS['database']['password'].
 
 ### Router
 
