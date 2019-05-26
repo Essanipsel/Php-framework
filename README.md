@@ -48,11 +48,13 @@ The model is not really an ORM but more something like a MySQL request builder. 
   - SELECT,
   - INSERT,
   - UPDATE
+
 In those requests you can use few paramters (depends on the request): 
   WHERE, 
   VALUES (for INSERT request), 
   SET (UPDATE request), 
   LIMIT. 
+
 To complete a request you have several parameters to give:
   - The table (mandatory)
   - The scope (default: *)
