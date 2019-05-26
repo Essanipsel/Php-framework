@@ -15,6 +15,7 @@ $router_file = json_decode($router_file, true);
 // Route engine find the good configuration based on url parameters and router.json
 $routeEngine = new RouteEngine($router_file);
 $execConfig = $routeEngine->execConfig;
+$GLOBALS['title'] = $execConfig['title'];
 
 // App execution
 require('../app/controller/'.$execConfig['controller'].'.php');

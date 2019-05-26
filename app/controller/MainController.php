@@ -11,9 +11,7 @@ class MainController
     }
 
     public function show(){
-        $builder = new RequestBuilder();
-
-
+        echo "Framework home";
     }
     public function showBlog(){
         echo "Framework blog - Article ".$GLOBALS['url']['param']['id'];
