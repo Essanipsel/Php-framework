@@ -4,8 +4,8 @@
       "path": "mysql",
       "name": "framework",
       "charset": "utf8",
-      "user": "ronflex",
-      "password": "kfixwoax"
+      "user": "user",
+      "password": "password"
     }
   }
 }

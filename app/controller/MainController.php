@@ -14,6 +14,6 @@ class MainController
         echo "Framework home";
     }
     public function showBlog(){
-        echo "Framework blog - Article ".$GLOBALS['url']['param']['id'];
+        echo "Framework blog";
     }
 }

@@ -17,34 +17,6 @@
       "title": "Framework error",
       "controller": "ErrorController",
       "method": "show"
-    },
-    {
-      "route": "blog/article/{id}",
-      "title": "Framework blog",
-      "controller": "MainController",
-      "method": "showBlog"
-    },
-    {
-      "route": "/admin",
-      "title": "Framework - Admin",
-      "controller": "AdminController",
-      "method": "show",
-      "middleware": {
-        "UserManager": [
-          {
-            "attr": "levelUser",
-            "operator": ">=",
-            "value": 5,
-            "error": "/error/403"
-          },
-          {
-            "attr": "nameUser",
-            "operator": "==",
-            "value": "Nicolas",
-            "error": "/error/500"
-          }
-        ]
-      }
     }
   ]
 }

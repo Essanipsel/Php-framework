@@ -1,5 +1,5 @@
 <?php
-
+// remove in prod
 error_reporting(E_ALL);
 
 // setup config variables
@@ -22,9 +22,3 @@ require('../app/controller/'.$execConfig['controller'].'.php');
 $controller = new $execConfig['controller'];
 $methodStr = $execConfig['method'];
 $controller->$methodStr();
-
-/*try{
-    $bdd = new PDO('mysql:host=mysql;dbname=framework;charset=utf8', 'ronflex', 'kfixwoax');
-} catch (Exception $e) {
-    echo $e;
-}*/
