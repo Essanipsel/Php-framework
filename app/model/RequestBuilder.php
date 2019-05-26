@@ -12,9 +12,11 @@ class RequestBuilder
     private $requester;
 
     public function __construct(){
-        $this->requester = new Requester()
-;    }
-
+        $this->requester = new Requester();
+    }
+    public function update($config = null){
+        if($config != null) return $this->requester->update($config);
+    }
     public function addWhere($column, $operator, $value, $linkOperator = null){
         if($linkOperator != null) $this->whereTab["operator"] = $linkOperator;
         $this->whereTab[$column] = array(
@@ -44,9 +46,9 @@ class RequestBuilder
     }
     public function find($config = null){
         if($config != null){
-            $this->requester->find($config);
+            return $this->requester->find($config);
         }
-        else if(isset($this->scope) && isset($this->table)){
+        else if(isset($this->table)){
             return $this->requester->find($this->buildTabRequest());
         }
         else return false;

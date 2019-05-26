@@ -12,6 +12,7 @@ class Requester
     }
     //WHERE & LIMIT implemented
     public function find($config){
+        if(@empty($config['scope'])) $config['scope'] = "*";
         $scope = $config['scope'];
         $table = $config['table'];
         $request = "SELECT $scope FROM $table ";
@@ -19,32 +20,6 @@ class Requester
         if(@isset($config['limit'])) $request .= $this->writeLimitParam($config['limit']);
 
         return $this->requestEngine($request);
-    }
-    private function requestEngine($request, $return = true){
-        $req = $this->bdd->prepare($request);
-        $req->execute($this->bindTab);
-
-        if($return) return $req->fetchAll();
-        else return $this->bindTab;
-
-    }
-    private function writeWhereParam($whereTab){
-        $request = "WHERE ";
-        foreach ($whereTab as $index => $param){
-            if($index == "operator"){
-                $request .= "$param ";
-            } else {
-                $request .= $index.$param['operator'].":$index ";
-                $this->bindTab[$index] = $param['value'];
-            }
-        }
-        return $request;
-    }
-    private function writeLimitParam($limitTab){
-        $request = "LIMIT ".$limitTab[0];
-        if(@isset($limitTab[1])) $request .= ", ".$limitTab[1];
-
-        return $request;
     }
     public function create($config){
         $table = $config['table'];
@@ -64,5 +39,49 @@ class Requester
         $request .= $requestBinds.')';
 
         return $this->requestEngine($request, false);
+    }
+    public function update($config){
+        $table = $config['table'];
+        $request = "UPDATE $table ";
+        $request .= $this->writeSetValues($config['values']).' ';
+        $request .= $this->writeWhereParam($config['where']);
+
+        return $this->requestEngine($request, false);
+    }
+    private function writeSetValues($valuesTab){
+        $request = "SET ";
+        $comptValue = 0;
+        foreach($valuesTab as $index => $value){
+            if($comptValue > 0) $request .= ",";
+            $request .= $index."=:".$index;
+            $this->bindTab[$index] = $value;
+            $comptValue ++;
+        }
+        return $request;
+    }
+    private function requestEngine($request, $return = true){
+        $req = $this->bdd->prepare($request);
+        $req->execute($this->bindTab);
+
+        if($return) return $req->fetchAll();
+        else return $this->bindTab;
+    }
+    private function writeWhereParam($whereTab){
+        $request = "WHERE ";
+        foreach ($whereTab as $index => $param){
+            if($index == "operator"){
+                $request .= "$param ";
+            } else {
+                $request .= $index.$param['operator'].":$index ";
+                $this->bindTab[$index] = $param['value'];
+            }
+        }
+        return $request;
+    }
+    private function writeLimitParam($limitTab){
+        $request = "LIMIT ".$limitTab[0];
+        if(@isset($limitTab[1])) $request .= ", ".$limitTab[1];
+
+        return $request;
     }
 }
