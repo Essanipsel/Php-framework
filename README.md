@@ -8,6 +8,10 @@
 
 ## How to use
 
+### Config.json attributes
+
+At the project root you can see there is a config.json file. You're right, this is not very usual to use json file with PHP, but it was quite easy for this usage. This file was made to manage general attributes like database credentials, external webservices credentials, environment parameters, etc. You can add as much parameters as you want. You can access them through the $GLOBALS variable - ex: $GLOBALS['database']['password'].
+
 ### Router
 
 To configure the routes inside your project you just have to write them inside /public/router.json. This file allow you to create every route you need and it accepts several parameters.
