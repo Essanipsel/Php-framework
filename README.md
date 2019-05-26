@@ -74,7 +74,7 @@ Now you have precised every parameters you need, you can call any execusion meth
   - **create** execute an INSERT request. Require a table and at least one value
   - **update** execute an UPDATE request. Require at least a table, one value and on where condition.
   - **delete** Work in progress
-## Second method - w/o builder
+#### Second method - w/o builder
 Each execution method (find, findOne, create, update, delete) in the RequestBuilder can be called with a paramters. If you pass a value to those methods they will ignore their attribuits and use the array. Here's an architecture example for the array
 $builder->update(array(
     "table" => "Articles",
