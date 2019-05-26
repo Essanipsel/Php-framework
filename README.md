@@ -70,6 +70,7 @@ Let's start with the attributes. First of all you can access to the scope and th
   - **addValue:** In INSERT and UPDATE requests you have to give one or many values. For both request you have to use the method addValue. For each value you have indicate the column in the database (1st param) and its value (2nd).
   - **addValues:** Same than addValue but you can send an array composed by the two needed values.
   - **addLimit:** The first paramters is the start point and the second is the length of the return array.
+
 Now you have precised every parameters you need, you can call any execusion method:
   - **find:** execute a SELECT request. Require a table,
   - **findOne**: Same than find but return just one array with all values inside. (no index)
@@ -78,6 +79,7 @@ Now you have precised every parameters you need, you can call any execusion meth
   - **delete** Work in progress
 #### Second method - w/o builder
 Each execution method (find, findOne, create, update, delete) in the RequestBuilder can be called with a paramters. If you pass a value to those methods they will ignore their attribuits and use the array. Here's an architecture example for the array
+
 $builder->update(array(
     "table" => "Articles",
     "values" => array(
@@ -91,4 +93,5 @@ $builder->update(array(
         )
     )
 )));
+
 This method is working in exactly the same way than the first one. It's just easier to use methods if you have to build complex requests.
