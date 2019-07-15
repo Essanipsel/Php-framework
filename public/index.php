@@ -2,6 +2,14 @@
 // remove in prod
 error_reporting(E_ALL);
 
+
+session_start();
+require('../app/model/RequestBuilder.php');
+require('../app/utils/IncludesManager.php');
+
+//Ftools
+require('../app/utils/Ftools.php');
+
 // setup config variables
 $config_file = file_get_contents('../config.json');
 $config_file = json_decode($config_file, true);

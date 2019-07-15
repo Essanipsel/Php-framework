@@ -7,6 +7,7 @@ class RequestBuilder
     private $whereTab;
     private $limitTab;
     private $valuesTab;
+    private $orderByTab;
     public $scope;
     public $table;
     private $requester;
@@ -14,14 +15,40 @@ class RequestBuilder
     public function __construct(){
         $this->requester = new Requester();
     }
+    public function cleanBuilder(){
+        $this->whereTab = array();
+        $this->limitTab = array();
+        $this->valuesTab = array();
+        $this->scope = "";
+        $this->table = "";
+    }
+    public function setTable($table){
+        $this->table = $table;
+    }
+    public function setScope($scope){
+        $this->scope = $scope;
+    }
     public function update($config = null){
         if($config != null) return $this->requester->update($config);
+        else if(isset($this->table) && isset($this->valuesTab) && isset($this->whereTab)) return $this->requester->update($this->buildTabRequest());
+        else return false;
+    }
+    public function delete($config = null){
+        if($config != null) return $this->requester->delete($config);
+        else if(isset($this->table) && isset($this->whereTab)) return $this->requester->delete($this->buildTabRequest());
+        else return false;
     }
     public function addWhere($column, $operator, $value, $linkOperator = null){
         if($linkOperator != null) $this->whereTab["operator"] = $linkOperator;
         $this->whereTab[$column] = array(
             "operator" => $operator,
             "value" => $value
+        );
+    }
+    public function addOrderBy($column, $asc = true){
+        $this->orderByTab[] = array(
+            "column" => $column,
+            "ASC" => $asc
         );
     }
     public function addLimit($start, $length = null){
@@ -63,6 +90,7 @@ class RequestBuilder
             "table" => $this->table,
             "values" => $this->valuesTab,
             "where" => $this->whereTab,
+            "orderby" => $this->orderByTab,
             "limit" => $this->limitTab
         );
     }

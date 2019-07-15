@@ -17,6 +17,7 @@ class Requester
         $table = $config['table'];
         $request = "SELECT $scope FROM $table ";
         if(@isset($config['where'])) $request .= $this->writeWhereParam($config['where']);
+        if(@isset($config['orderby'])) $request .= $this->writeOrderBy($config['orderby']);
         if(@isset($config['limit'])) $request .= $this->writeLimitParam($config['limit']);
 
         return $this->requestEngine($request);
@@ -48,6 +49,13 @@ class Requester
 
         return $this->requestEngine($request, false);
     }
+    public function delete($config){
+        $table = $config['table'];
+        $request = "DELETE FROM $table ";
+        $request .= $this->writeWhereParam($config['where']);
+
+        return $this->requestEngine($request, false);
+    }
     private function writeSetValues($valuesTab){
         $request = "SET ";
         $comptValue = 0;
@@ -63,7 +71,7 @@ class Requester
         $req = $this->bdd->prepare($request);
         $req->execute($this->bindTab);
 
-        if($return) return $req->fetchAll();
+        if($return) return $req->fetchAll(PDO::FETCH_ASSOC);
         else return $this->bindTab;
     }
     private function writeWhereParam($whereTab){
@@ -76,6 +84,20 @@ class Requester
                 $this->bindTab[$index] = $param['value'];
             }
         }
+        return $request;
+    }
+    private function writeOrderBy($orderTab){
+        $request = "ORDER BY ";
+        $comptParam = 0;
+        foreach ($orderTab as $index => $param){
+            if($comptParam > 0) $request .= ', ';
+            if(@isset($param['ASC'])) $asc = $param['ASC'];
+            else $asc = true;
+            $request .= $param['column'] . ' ';
+            if(!$asc) $request .= "DESC";
+            $comptParam ++;
+        }
+        $request .= ' ';
         return $request;
     }
     private function writeLimitParam($limitTab){

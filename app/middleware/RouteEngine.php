@@ -15,10 +15,13 @@ class RouteEngine
         "method" => "show"
     );
     public $execConfig;
+    private $requestType = 'GET';
 
     public function __construct($routeJson){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') $this->requestType = 'POST';
         $this->routeJson = $routeJson;
-        $this->urlParam = $_SERVER['REQUEST_URI'];
+        $this->urlParam = strstr($_SERVER['REQUEST_URI'], '?', true) ? strstr($_SERVER['REQUEST_URI'], '?', true) : $_SERVER['REQUEST_URI'];
+        $this->requireMiddlewares();
         $this->decomposeUrl();
         $this->extractRoutes();
         $configExec = $this->compareRoutes();
@@ -31,10 +34,19 @@ class RouteEngine
         $this->setGlobalFromUrl($configExec['route']);
         $this->execConfig = $configExec;
     }
+    private function requireMiddlewares(){
+        $middlewares = glob("../app/middleware/*.php");
+        foreach ($middlewares as $file){
+            $file = substr($file, 18);
+            if($file != "RouteEngine.php"){
+                require($file);
+            }
+        }
+    }
     private function runMiddleware($middleware){
         $isGood = true;
         foreach ($middleware as $indexM => $tabMiddleware){
-            require($indexM.'.php');
+            $indexM::init();
             foreach ($tabMiddleware as $rules){
                 $attr = $rules['attr'];
                 if(!$this->compareAttr($indexM::$$attr,$rules['operator'],$rules['value'])) {
@@ -76,15 +88,18 @@ class RouteEngine
         $indexGoodRoute = -1;
         $indexRoute = 0;
         foreach ($tabRoutes as $routes){
-            if(empty($routes) && empty($tabParam)) $indexGoodRoute = $indexRoute;
-            else if(count($routes) == count($tabParam)){
-                $indexParam = 0;
-                $isGood = true;
-                foreach($tabParam as $param){
-                    if(@(!strstr($routes[$indexParam], "{") && $param != $routes[$indexParam])) $isGood = false;
-                    $indexParam ++;
+            if(@empty($this->routeJson['routes'][$indexRoute]['request'])) $this->routeJson['routes'][$indexRoute]['request'] = 'GET';
+            if($this->routeJson['routes'][$indexRoute]['request'] == $this->requestType) {
+                if (empty($routes) && empty($tabParam)) $indexGoodRoute = $indexRoute;
+                else if (count($routes) == count($tabParam)) {
+                    $indexParam = 0;
+                    $isGood = true;
+                    foreach ($tabParam as $param) {
+                        if (@(!strstr($routes[$indexParam], "{") && $param != $routes[$indexParam])) $isGood = false;
+                        $indexParam++;
+                    }
+                    if ($isGood) $indexGoodRoute = $indexRoute;
                 }
-                if($isGood) $indexGoodRoute = $indexRoute;
             }
             $indexRoute ++;
         }
