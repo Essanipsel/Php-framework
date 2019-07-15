@@ -9,32 +9,32 @@ services:
      - 80
      - 443
     ports:
-      - "8000:80"
+      - "8080:80"
     volumes:
      - ./:/var/www/html
     links:
-     - mysql
+     - frameworkdb
     depends_on:
-     - mysql
-  mysql:
+     - frameworkdb
+  frameworkdb:
     image: mysql:5.7
     volumes:
      - ./config/mysql/:/var/lib/mysql
     environment:
-     - MYSQL_DATABASE=framework
-     - MYSQL_USER=ronflex
-     - MYSQL_PASSWORD=kfixwoax
-     - MYSQL_ROOT_PASSWORD=kfixwoax
+     - MYSQL_DATABASE=frameworkdb
+     - MYSQL_USER=frameworkdb
+     - MYSQL_PASSWORD=p@ssw0rd
+     - MYSQL_ROOT_PASSWORD=p@ssw0rd
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
     ports:
       - "8001:80"
     links:
-      - mysql
+      - frameworkdb
     depends_on:
-      - mysql
+      - frameworkdb
     environment:
-      - MYSQL_USER=ronflex
-      - MYSQL_PASSWORD=kfixwoax
-      - MYSQL_ROOT_PASSWORD=kfixwoax
-      - PMA_HOST=mysql
+      - MYSQL_USER=frameworkdb
+      - MYSQL_PASSWORD=p@ssw0rd
+      - MYSQL_ROOT_PASSWORD=p@ssw0rd
+      - PMA_HOST=frameworkdb
