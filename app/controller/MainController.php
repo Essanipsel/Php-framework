@@ -1,7 +1,5 @@
 <?php
 
-require('../app/model/RequestBuilder.php');
-
 class MainController
 {
     private $requester;
