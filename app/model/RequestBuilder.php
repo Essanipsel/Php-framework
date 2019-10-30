@@ -19,6 +19,7 @@ class RequestBuilder
         $this->whereTab = array();
         $this->limitTab = array();
         $this->valuesTab = array();
+        $this->orderByTab = array();
         $this->scope = "";
         $this->table = "";
     }
