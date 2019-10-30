@@ -4,6 +4,7 @@ require('Requester.php');
 
 class RequestBuilder
 {
+    private $naturalJoinTab;
     private $whereTab;
     private $limitTab;
     private $valuesTab;
@@ -16,6 +17,7 @@ class RequestBuilder
         $this->requester = new Requester();
     }
     public function cleanBuilder(){
+        $this->naturalJoinTab = array();
         $this->whereTab = array();
         $this->limitTab = array();
         $this->valuesTab = array();
@@ -64,6 +66,9 @@ class RequestBuilder
             $this->addValue($index, $value);
         }
     }
+    public function addNaturalJoin($table){
+        $this->naturalJoinTab[] = $table;
+    }
     public function create($config = null){
         if($config != null){
             return $this->requester->create($config);
@@ -89,6 +94,7 @@ class RequestBuilder
         return array(
             "scope" => $this->scope,
             "table" => $this->table,
+            "naturaljoin" => $this->naturalJoinTab,
             "values" => $this->valuesTab,
             "where" => $this->whereTab,
             "orderby" => $this->orderByTab,

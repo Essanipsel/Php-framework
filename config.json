@@ -1,11 +1,11 @@
 {"global": {
     "database": {
       "engine": "mysql",
-      "path": "mysql",
-      "name": "framework",
+      "path": "frameworkdb",
+      "name": "frameworkdb",
       "charset": "utf8",
-      "user": "user",
-      "password": "password"
+      "user": "frameworkdb",
+      "password": "p@ssw0rd"
     }
   }
 }

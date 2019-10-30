@@ -16,6 +16,7 @@ class Requester
         $scope = $config['scope'];
         $table = $config['table'];
         $request = "SELECT $scope FROM $table ";
+        if(@isset($config['naturaljoin'])) $request .= $this->writeNaturalJoin($config['naturaljoin']);
         if(@isset($config['where'])) $request .= $this->writeWhereParam($config['where']);
         if(@isset($config['orderby'])) $request .= $this->writeOrderBy($config['orderby']);
         if(@isset($config['limit'])) $request .= $this->writeLimitParam($config['limit']);
@@ -103,6 +104,15 @@ class Requester
     private function writeLimitParam($limitTab){
         $request = "LIMIT ".$limitTab[0];
         if(@isset($limitTab[1])) $request .= ", ".$limitTab[1];
+
+        return $request;
+    }
+    private function writeNaturalJoin($naturalJoinTable){
+        $request = "";
+        foreach ($naturalJoinTable as $index => $param){
+            $request .= "NATURAL JOIN ".$param;
+        }
+        $request .= ' ';
 
         return $request;
     }
